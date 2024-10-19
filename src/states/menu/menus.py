@@ -92,11 +92,17 @@ class StartMenu(State):
         # Create menu
         if (self.current_theme == "Light"):
             self.menu = pygame_menu.Menu('Options', SCREEN_WIDTH, SCREEN_HEIGHT, theme=pygame_menu.themes.THEME_BLUE)
+            self.menu.add.label("Temple reddit post:: " + get_news().title, "news_banner",
+                                wordwrap=True, font_size=14, font_color=(61, 170, 220),
+                                margin=[0, 50])
+
 
         else:
             self.menu = pygame_menu.Menu('Options', SCREEN_WIDTH, SCREEN_HEIGHT, theme=pygame_menu.themes.THEME_DARK)
+            self.menu.add.label("Temple reddit post:: " + get_news().title, "news_banner",
+                                wordwrap=True, font_size=14, font_color=(200, 200, 200),
+                                margin=[0, 50])
 
-        self.menu.add.label("Temple reddit post:: " + get_news().title, "news_banner", wordwrap=True, font_size=14, font_color="black", margin=[0, 50])
             # Add buttons to the menu
         self.menu.add.button('Start Game', self.manager.set_state, Level1_1)
         self.menu.add.button("Instructions", self.instructions_menu)
