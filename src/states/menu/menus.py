@@ -393,7 +393,7 @@ class UsernamePrompt(State):
         for y in range(SCREEN_HEIGHT):
             # Calculate color based on y position and time for gradient movement
             red = (math.sin(0.005 * y + self.gradient_time) * 127 + 128) % 256
-            green = (math.sin(0.005 * y + self.gradient_time + 2) * 127 + 128) % 256
+            green = (math.sin(0.005 * y + self.gradient_time) * 127 + 128) % 256
             blue = (math.sin(0.005 * y + self.gradient_time + 4) * 127 + 128) % 256
             color = (red, green, blue)
             # Fill each row with the calculated color
