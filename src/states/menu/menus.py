@@ -3,6 +3,7 @@ import math
 
 import pygame as pg
 import pygame_menu
+import redditwarp.SYNC
 
 # Not using relative import to handle circular import issue when importing TitleScreen
 # TODO Fix this later
@@ -42,6 +43,12 @@ def save_theme_config(theme):
     """
     with open('theme_config.json', 'w') as file:
         json.dump({'theme': theme}, file)
+
+
+def get_news():
+    client = redditwarp.SYNC.Client()
+    m = next(client.p.subreddit.pull.top('Temple', amount=1, time='hour'))
+    return m
 
 
 class StartMenu(State):
@@ -85,9 +92,16 @@ class StartMenu(State):
         # Create menu
         if (self.current_theme == "Light"):
             self.menu = pygame_menu.Menu('Options', SCREEN_WIDTH, SCREEN_HEIGHT, theme=pygame_menu.themes.THEME_BLUE)
+            self.menu.add.label("Temple reddit post:: " + get_news().title, "news_banner",
+                                wordwrap=True, font_size=14, font_color=(61, 170, 220),
+                                margin=[0, 50])
+
 
         else:
             self.menu = pygame_menu.Menu('Options', SCREEN_WIDTH, SCREEN_HEIGHT, theme=pygame_menu.themes.THEME_DARK)
+            self.menu.add.label("Temple reddit post:: " + get_news().title, "news_banner",
+                                wordwrap=True, font_size=14, font_color=(200, 200, 200),
+                                margin=[0, 50])
 
             # Add buttons to the menu
         self.menu.add.button('Start Game', self.manager.set_state, Level1_1)
