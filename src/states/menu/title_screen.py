@@ -21,15 +21,27 @@ class TitleScreen(State):
         pg.mixer.music.set_volume(menus.volume)
         pg.mixer.music.play(-1)  # Start playing background music on a loop
 
+    # add mouse click in title screen, now can use both RETURN and left & right click
     def handle_events(self, events: list[pg.event.Event]):
         for event in events:
-            if event.type != pg.KEYDOWN:
-                return
-            if event.key == pg.K_RETURN:
+            # if event.type != pg.KEYDOWN:
+                # return
+            if event.type == pg.KEYDOWN and event.key == pg.K_RETURN: # check for key being pressed
                 if self.game.username == "":
                     self.manager.set_state(UsernamePrompt)
                 else:
                     self.manager.set_state(StartMenu)
+            elif event.type == pg.MOUSEBUTTONDOWN: # check for mouse clicks
+                if event.button == 0: # left click
+                    if self.game.username == "":
+                        self.manager.set_state(UsernamePrompt)
+                    else:
+                        self.manager.set_state(StartMenu)
+                elif event.button == 2: # right click
+                    if self.game.username == "":
+                        self.manager.set_state(UsernamePrompt)
+                    else:
+                        self.manager.set_state(StartMenu)
 
     def draw(self):
         super().draw()
