@@ -103,7 +103,7 @@ class Player(pg.sprite.Sprite):
         # Load the sound effects
         self.hit_sound = pg.mixer.Sound("assets/soundeffects/playerhit.mp3")
         self.melee_attack_sound = pg.mixer.Sound("assets/soundeffects/meleeattack.mp3")
-        self.ranged_attack_sound = pg.mixer.Sound("assets/soundeffects/rangedattack.mp3")
+        self.ranged_attack_sound = pg.mixer.Sound("assets/soundeffects/lasersound.wav")
 
         self.font = pg.font.Font(None, 20)  # TODO
 
