@@ -20,6 +20,6 @@ class WinScreen(State):
     def draw(self):
         super().draw()
         self.screen.blit(
-            pg.font.Font(None, 36).render("You win!", True, "black"),
-            (self.screen.get_width() / 2, self.screen.get_height() - 100)
+            pg.font.Font(None, 36).render("You win! Press Enter to get back to the Title Screen!", True, "black"),
+            (self.screen.get_width() / 6, self.screen.get_height() - 125)
         )
