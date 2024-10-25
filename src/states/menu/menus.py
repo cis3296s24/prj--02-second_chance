@@ -19,6 +19,10 @@ from src.states.state import State, TimedState
 from src.utils.leaderboard import LeaderboardManager
 from src.utils.timer import Timer
 from ..levels.level1_1 import Level1_1
+from ..levels.level2_1 import Level2_1
+
+import redditwarp.SYNC
+import webbrowser
 
 # Global variable for volume
 volume = 0.5  # Initial volume value, you can set it to any value you desire
@@ -90,13 +94,15 @@ class StartMenu(State):
             self.menu = pygame_menu.Menu('Options', SCREEN_WIDTH, SCREEN_HEIGHT, theme=pygame_menu.themes.THEME_DARK)
 
             # Add buttons to the menu
-        self.menu.add.button('Start Game', self.manager.set_state, Level1_1)
+        self.menu.add.button('Start Level 1', self.manager.set_state, Level1_1)
+        self.menu.add.button('Start Level 2', self.manager.set_state, Level2_1)
         self.menu.add.button("Instructions", self.instructions_menu)
         self.menu.add.button("Minigames", self.minigames_menu)
         self.menu.add.button("Leaderboard", self.leaderboard_menu)
         self.menu.add.button("Options", self.options_menu)
         self.menu.add.button('Change Username', self.manager.set_state, UsernamePrompt)
         self.menu.add.button('Quit', pygame_menu.events.EXIT)
+        self.menu.add.button ('News', self.news_menu)
 
     def instructions_menu(self):
         """Opens the instructions menu."""
@@ -180,6 +186,33 @@ class StartMenu(State):
         # Add back button
         self.menu.add.button('Back', self.main_menu)
 
+    def news_menu(self):
+        """
+        Display lastest news of Temple from Reddit API
+        """
+        if (self.current_theme == "Light"):
+            self.menu = pygame_menu.Menu('News', SCREEN_WIDTH, SCREEN_HEIGHT, theme=pygame_menu.themes.THEME_BLUE)
+        else:
+            self.menu = pygame_menu.Menu('News', SCREEN_WIDTH, SCREEN_HEIGHT, theme=pygame_menu.themes.THEME_DARK)
+
+        # Fetch most latest post of Temple subreddit
+        client = redditwarp.SYNC.Client()
+        m = next(client.p.subreddit.pull.top('Temple', amount=1, time='hour'))
+        
+        # Extract title and permalink
+        news_title = m.title
+        news_link = m.permalink
+
+        # Display the title and permalink on the News menu
+        self.menu.add.label(f"{news_title}", max_char=60, font_size=20)
+        self.menu.add.label(f"{news_link}", max_char=60, font_size=16)
+
+        # Add a button that opens the link in the browser
+        self.menu.add.button('Read More', lambda: webbrowser.open(news_link))
+
+        # Add back button
+        self.menu.add.button('Back', self.main_menu)
+    
     def toggle(self):
         """Toggles the current menu theme."""
 
